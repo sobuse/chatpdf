@@ -1,5 +1,7 @@
 "use client"
 import { uploadToS3 } from '@/lib/s3'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
 import { Inbox } from 'lucide-react'
 import React from 'react'
 import { useDropzone } from 'react-dropzone'
@@ -7,6 +9,15 @@ import { useDropzone } from 'react-dropzone'
 
 
 const FileUpload = () => {
+
+    const {mutate} = useMutation({
+        mutationFn: async ({file_key, file_name}:
+            {file_key:string, file_name:string}) =>{
+          const response = await axios.post('/api/create-chat', {file_key,file_name});
+          return response.data;
+        }
+    })
+
     const {getRootProps, getInputProps} = useDropzone({
         accept:{"application/pdf": [".pdf"]},
         maxFiles:1,
@@ -19,7 +30,16 @@ const FileUpload = () => {
                 return 
             }
             try {
-                const data = await uploadToS3(file)
+                const data = await uploadToS3(file);
+                if(!data?.file_key || !data.file_name){
+                    alert("something went wrong");
+                    return;
+                }
+                mutate(data, {
+                    onSuccess:(data) =>{
+                       console.log(data)
+                    }
+                })
                 console.log('data',data)
             } catch (error) {
                 console.log(error)

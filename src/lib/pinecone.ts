@@ -1,7 +1,9 @@
-import {PineconeClient} from "@pinecone-database/pinecone"
+import {PineconeClient, Vector} from "@pinecone-database/pinecone"
 import { downloadFroms3 } from "./s3-server";
 import {PDFLoader} from "langchain/document_loaders/fs/pdf"
+import md5 from 'md5'
 import { Document, RecursiveCharacterTextSplitter } from "@pinecone-database/doc-splitter";
+import { getEmbeddings } from "./embeddings";
 
 let pinecone: PineconeClient | null = null;
 
@@ -38,7 +40,26 @@ export async function loadS3intoPinecone(fileKey:string){
     
     const documents = await Promise.all(pages.map(prepareDocument));
 
-    //
+    //3. vectorise and embed individual documents
+    const vectors = await Promise.all(documents.flat().map(embedDocument))
+}
+
+async function embedDocument(doc: Document){
+    try {
+        const embeddings = await getEmbeddings(doc.pageContent)
+        const hash = md5(doc.pageContent)
+        return {
+            id:hash,
+            values:embeddings,
+            metadata:{
+                text:doc.metadata.text,
+                pageNumber: doc.metadata.pageNumber
+            }
+        } as Vector
+    } catch (error) {
+        console.log('error embedding document',error)
+        throw error;
+    }
 }
 
 export const truncateStringByBite = (str: string , bytes: number) => {

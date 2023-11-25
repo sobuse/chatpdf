@@ -1,9 +1,10 @@
-import {PineconeClient, Vector} from "@pinecone-database/pinecone"
+import {PineconeClient, Vector, utils as PineconeUtils} from "@pinecone-database/pinecone"
 import { downloadFroms3 } from "./s3-server";
 import {PDFLoader} from "langchain/document_loaders/fs/pdf"
 import md5 from 'md5'
 import { Document, RecursiveCharacterTextSplitter } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
+import { convertToAscii } from "./utils";
 
 let pinecone: PineconeClient | null = null;
 
@@ -41,7 +42,17 @@ export async function loadS3intoPinecone(fileKey:string){
     const documents = await Promise.all(pages.map(prepareDocument));
 
     //3. vectorise and embed individual documents
-    const vectors = await Promise.all(documents.flat().map(embedDocument))
+    const vectors = await Promise.all(documents.flat().map(embedDocument));
+
+    //4. upload to pinecone
+    const client = await getPineconeClient();
+    const pineconeIndex = client.Index('chatpdf');
+
+    console.log('inserting vector into pinecone');
+    const namespace = convertToAscii(fileKey); 
+    PineconeUtils.chunkedUpsert(pineconeIndex,vectors,namespace,10);
+
+    return documents[0];
 }
 
 async function embedDocument(doc: Document){

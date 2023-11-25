@@ -2,7 +2,7 @@ import {pgTable,serial,text, varchar,timestamp, integer,pgEnum} from "drizzle-or
 
 export const userSystemEnum = pgEnum('user_system_enum',['system','user'])
 
-const chats = pgTable('chats', {
+export const chats = pgTable('chats', {
     id: serial('id').primaryKey(),
     pdfName: text('pdf_name').notNull(),
     pdfUrl: text('pdf_url').notNull(),

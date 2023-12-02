@@ -1,3 +1,4 @@
+import ChatComponent from '@/components/ChatComponent'
 import ChatSideBar from '@/components/ChatSideBar'
 import PDFViewer from '@/components/PDFViewer'
 import { db } from '@/lib/db'
@@ -27,22 +28,22 @@ const chatPage = async ({params:{chatId}}: Props) => {
         return redirect("/")
     }
 
-    const currentChat = _chats.find(chat => chat.id === parseInt(chatId))
+    const currentChat = _chats.find((chat ) => chat.id === parseInt(chatId))
 
     return (  
         <div className='flex max-h-screen overflow-scroll'>
             <div className='flex max-h-screen overflow-scroll'>
-                {/*chat side bar*/}
+                
                 <div className='flex-[1] max-w-xs'>
                 <ChatSideBar chats={_chats} chatId={parseInt(chatId)}/>
                 </div>
-                {/*pdf viewer*/}
+                
                 <div className='max-h-screen p-4 overflow-scroll flex-[5]'>
                     <PDFViewer pdf_url={currentChat?.pdfUrl || ""}/>
                 </div>
-                {/*chat compnent*/}
+                
                 <div className='flex-[3] border-1-4 border-1-4 border-1-slate-200'>
-                {/*<ChatComponent/>*/}
+               <ChatComponent/>
 
                 </div>
             </div>

@@ -1,16 +1,16 @@
-// import React from 'react'
+ import React from 'react'
 
-// type Props = {pdf_url: string}
+ type Props = {pdf_url: string}
 
-// const PDFViewer = ({pdf_url}: Props) => {
-//   return (
-//     <iframe src={`https://docs.google.com/gview?url=${pdf_url}&emmbedded=true`} className="w-full h-full">
+ const PDFViewer = ({pdf_url}: Props) => {
+   return (
+     <iframe src={`https://docs.google.com/gview?url=${pdf_url}&emmbedded=true`} className="w-full h-full">
 
-//     </iframe>
-//   )
-// }
+     </iframe>
+  )
+ }
 
-// export default PDFViewer
+ export default PDFViewer
 // import React from 'react';
 // import { Document, Page } from 'react-pdf';
 
@@ -27,17 +27,17 @@
 // };
 
 // export default PDFViewer;
-import React from 'react';
+// import React from 'react';
 
-type Props = { pdf_url: string };
+// type Props = { pdf_url: string };
 
-const PDFViewer = ({ pdf_url }: Props) => {
-  return (
-    <a href={pdf_url} target="_blank" rel="noopener noreferrer">
-      View PDF
-    </a>
-  );
-};
+// const PDFViewer = ({ pdf_url }: Props) => {
+//   return (
+//     <a href={pdf_url} target="_blank" rel="noopener noreferrer">
+//       View PDF
+//     </a>
+//   );
+// };
 
-export default PDFViewer;
+// export default PDFViewer;
 

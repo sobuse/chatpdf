@@ -2,6 +2,7 @@
 import { uploadToS3 } from '@/lib/s3'
 import { useMutation, } from '@tanstack/react-query'
 import axios from 'axios'
+import { boolean } from 'drizzle-orm/mysql-core'
 import { Inbox, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
@@ -12,10 +13,11 @@ import { toast } from 'react-hot-toast'
 
 
 const FileUpload = () => {
+    
     const router = useRouter();
     const [uploading, setUploading] = React.useState(false);
 
-    const {mutate,isLoading} = useMutation({
+    const {mutate, isLoading} = useMutation({
         mutationFn: async ({file_key, file_name}:
             {file_key:string, file_name:string}) =>{
           const response = await axios.post('/api/create-chat', {file_key,file_name});

@@ -1,17 +1,33 @@
 "use client"
 import { DrizzleChat } from '@/lib/db/schema'
 import { cn } from '@/lib/utils';
+import axios from 'axios';
 import { MessageCircle, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
+import SubscriptionButton from './subscriptionButton';
 import { Button } from './ui/button';
 
 type Props = {
     chats: DrizzleChat[],
     chatId: number;
+    isPro: boolean
 }
 
-const ChatSideBar = ({chats,chatId}: Props) => {
+const ChatSideBar = ({chats,chatId, isPro}: Props) => {
+    const [loading, setLoading]= React.useState(false);
+    
+    const handleSubscription = async () => {
+        try {
+            setLoading(true)
+            const resonse = await axios.get('/api/stripe');
+            window.location.href = resonse.data.url
+        } catch (error) {
+            console.error(error)
+        } finally{
+            setLoading(false)
+        }
+    }
   return (
     <div className='w-full h-screen p-4 text-gray-200 bg-gray-900'>
         <Link href='/'>
@@ -44,6 +60,7 @@ const ChatSideBar = ({chats,chatId}: Props) => {
                 </Link>
                 {/*Stripe Botton*/}
             </div>
+            <SubscriptionButton  isPro={isPro}/>
         </div>
 
     </div>

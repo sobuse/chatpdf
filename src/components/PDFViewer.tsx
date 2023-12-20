@@ -5,9 +5,9 @@
 
   const PDFViewer = ({pdf_url }: Props) => {
     return (
-     //    <iframe src="https://docs.google.com/gview?url=http://infolab.stanford.edu/pub/papers/google.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
+        // <iframe src="https://docs.google.com/gview?url=http://infolab.stanford.edu/pub/papers/google.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>
 
-     <iframe src={`https://docs.google.com/gview?url=${pdf_url}&emmbedded=true`} className="w-full h-full">
+     <iframe src={`https://docs.google.com/gview?url=${encodeURI(pdf_url)}&embedded=true`} className="w-full h-full">
 
       </iframe>//&output=embed
    )

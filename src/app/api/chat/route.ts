@@ -48,7 +48,7 @@ export async function POST(req: Request){
         const response = await openai.createChatCompletion({
             model: 'gpt-3.5-turbo',
             messages:[ 
-                prompt, ...messages.filter((message : Message) => message.role === 'user')
+                prompt, ...messages.filter((message : Message) => message.role === 'user'),
             ],
             stream:true
         })
@@ -60,7 +60,7 @@ export async function POST(req: Request){
                     chatId,
                     content: lastMessage.content,
                     role: "user"
-                })
+                });
             },
             onCompletion: async (completion)=>{
                 // save ai message into db
@@ -71,6 +71,7 @@ export async function POST(req: Request){
                 })
             }
         });
+        //return new NextResponse(stream)
         return new StreamingTextResponse(stream)
     } catch (error) {
         

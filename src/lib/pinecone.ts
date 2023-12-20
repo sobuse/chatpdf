@@ -40,9 +40,11 @@ export async function loadS3intoPinecone(fileKey:string){
     //2. split and segment the pdf into smaller documents
     
     const documents = await Promise.all(pages.map(prepareDocument));
+    const flattendDocuments = documents.flat();
 
+    console.log("we are uploading",flattendDocuments.length);
     //3. vectorise and embed individual documents
-    const vectors = await Promise.all(documents.flat().map(embedDocument));
+    const vectors = await Promise.all(flattendDocuments.map(embedDocument));
 
     //4. upload to pinecone
     const client = await getPineconeClient();

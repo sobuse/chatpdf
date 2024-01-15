@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+ChatPDF is a project I developed from the ground up. This application is designed to interact with uploaded PDF documents. Users can ask the application questions related to the PDF, and it will provide responses based on the content of the document. Additionally, users have the option to sign up, and there is also a premium version available for those looking to upgrade to the Pro version.
+
 ## Getting Started
 
 First, run the development server:
